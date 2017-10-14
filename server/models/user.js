@@ -39,8 +39,12 @@ module.exports.getUserById = function (id, callback) {
 
 // returns information for a specific user
 module.exports.getUserByUsername = function (username, callback) {
-  const query = {username: username}
-  User.findOne(query, callback)
+  User.findOne({username}, callback)
+}
+
+// returns information for a specific user based on email
+module.exports.getUserByEmail = function (email, callback) {
+  User.findOne({email}, callback)
 }
 
 // Adds user to the mongoDb
@@ -81,28 +85,4 @@ module.exports.getAllUsers = function (callback) {
 module.exports.doesUserNameExist = function (user, callback) {
   console.log(user)
   User.find({username: user.username}, callback)
-}
-
-// --------------------- Classes --------------------------------//
-
-// Addes class to the user's info
-module.exports.addClasses = function (id, classes, classback) {
-  console.log(classes)
-  User.findByIdAndUpdate({_id: mongoose.Types.ObjectId(id), classes, classback})
-}
-
-module.exports.updateUser = function (id, updatedUser, callback) {
-  console.log(updatedUser)
-  User.findByIdAndUpdate({_id: mongoose.Types.ObjectId(id)}, updatedUser, callback)
-}
-
-module.exports.getAllUsers = function (callback) {
-  User.find({}, {password: 0, _id: 0}, callback)
-}
-
-module.exports.getAllUsers = function (callback) {
-  User.find({}, {
-    password: 0,
-    _id: 0
-  }, callback)
 }
