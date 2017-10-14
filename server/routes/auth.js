@@ -63,7 +63,7 @@ router.post('/signup', (req, res) => {
   console.log(req.body)
 
   // Create new user to pass to function
-  var newUser = new User(...req.body)
+  const newUser = new User(req.body)
   console.log(newUser)
   let erArray = {}
   val.validationWrapper(newUser, (errorArray) => {

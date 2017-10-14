@@ -24,7 +24,7 @@ router.post('/', (req, res) => {
     const dom = HTMLParser.parse(body.body)
     article.title = dom.querySelector('h1')
     // Check for Domain existance
-    const fd = Domain.findOne({name: host}, (err, callback) => {
+    const fd = Domain.findOne({name: host}, (err, foundDomain) => {
       if (!_.isEmpty(err)) {
         console.log(err)
         return res.status(500).json({errors: {message: 'Error occured'}})

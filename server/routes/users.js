@@ -48,7 +48,7 @@ router.patch('/', (req, res) => {
   console.log('PATCH /users/')
   console.log(req.body)
   let erArray = {}
-  var updatedUser = {...req.body}
+  const updatedUser = (req.body)
   val.validationWrapper(updatedUser, (errorArray) => {
     erArray = errorArray
     console.log(erArray.errors)
