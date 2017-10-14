@@ -1,6 +1,8 @@
 const express = require('express')
 const router = new express.Router()
 const Domain = require('../models/domain')
+const prep = require('../help/prepForSend')
+const _ = require('lodash')
 
 router.patch('/', (req, res) => {
   console.log('PATCH /domains/')
