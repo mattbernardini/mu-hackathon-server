@@ -7,7 +7,7 @@ const curl = require('curl')
 const _ = require('lodash')
 const prep = require('../help/prepForSend')
 const Author = require('../models/author')
-const Domain = require('../models/Domain')
+const Domain = require('../models/domain')
 
 router.post('/', (req, res) => {
   console.log(req.body)
