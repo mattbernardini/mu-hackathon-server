@@ -20,4 +20,31 @@ router.patch('/', (req, res) => {
   })
 })
 
+router.get('/', (req, res) => {
+  console.log('GET /authors')
+  console.log(req.query)
+  const qs = new MongoQS({
+    custom: {
+      urlQueryParamName: function (query, input) {
+        query['name'] = input.name
+        query['domains'] = input.domains
+        query['tags'] = input.tags
+      }
+    }
+  })
+  const query = qs.parse(req.query)
+  Author.find(query, (err, author2) => {
+    if (err) {
+      console.log(err)
+      return res.status(500).json({errors: {message: 'Error occured'}})
+    }
+    let authors = []
+    _.forEach(author2, function (u) {
+      authors.push(prep.prepForSend(u))
+    })
+    res.json({authors})
+  })
+})
+const MongoQS = require('mongo-querystring')
+
 module.exports = router

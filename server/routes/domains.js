@@ -20,4 +20,30 @@ router.patch('/', (req, res) => {
   })
 })
 
+router.get('/', (req, res) => {
+  console.log('GET /domains')
+  console.log(req.query)
+  const qs = new MongoQS({
+    custom: {
+      urlQueryParamName: function (query, input) {
+        query['name'] = input.name
+        query['date'] = input.date
+      }
+    }
+  })
+  const query = qs.parse(req.query)
+  Domain.find(query, (err, domain2) => {
+    if (err) {
+      console.log(err)
+      return res.status(500).json({errors: {message: 'Error occured'}})
+    }
+    let domains = []
+    _.forEach(domain2, function (u) {
+      domains.push(prep.prepForSend(u))
+    })
+    res.json({domains})
+  })
+})
+const MongoQS = require('mongo-querystring')
+
 module.exports = router
