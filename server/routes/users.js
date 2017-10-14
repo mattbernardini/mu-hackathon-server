@@ -3,6 +3,7 @@ const User = require('../models/user')
 const MongoQS = require('mongo-querystring')
 const prep = require('../help/prepForSend')
 const _ = require('lodash')
+const val = require('../help/validation')
 const router = new express.Router()
 
 /*
@@ -46,16 +47,23 @@ const router = new express.Router()
 router.patch('/', (req, res) => {
   console.log('PATCH /users/')
   console.log(req.body)
-
+  let erArray = {}
   var updatedUser = {...req.body}
-
-  User.updateUser(req.body.id, updatedUser, (err) => {
-    if (err) {
-      console.log(err)
-      return res.status(500).json({errors: {message: 'Error occured, fialed to update '}})
-    } else {
-      return res.status(200)
+  val.validationWrapper(updatedUser, (errorArray) => {
+    erArray = errorArray
+    console.log(erArray.errors)
+    if (!_.isEmpty(erArray.errors)) {
+      console.log(erArray.errors)
+      return res.status(400).json({errors: erArray.errors})
     }
+    User.updateUser(req.body.id, updatedUser, (err) => {
+      if (err) {
+        console.log(err)
+        return res.status(500).json({errors: {message: 'Error occured, fialed to update '}})
+      } else {
+        return res.status(200)
+      }
+    })
   })
 })
 

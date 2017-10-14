@@ -5,6 +5,10 @@ module.exports = {
       delete obj.password
       obj.password = undefined
     }
+    if (obj.ip) {
+      delete obj.inspect
+      obj.ip = undefined
+    }
     if (obj._doc.passwordResetExpires) {
       delete obj.passwordResetExpires
     }
