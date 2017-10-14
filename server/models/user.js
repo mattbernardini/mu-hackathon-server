@@ -4,54 +4,29 @@ const bcrypt = require('bcrypt')
 
 // User Schema
 const UserSchema = mongoose.Schema({
-  fName: {
-    type: String
-  },
-  lName: {
-    type: String
-  },
   email: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   username: {
     type: String,
     required: true,
     unique: true
   },
-  school: {
-    type: String,
-    required: true
-
-  },
   password: {
     type: String,
     required: true
   },
-  pNumber: {
-    type: String
-  },
-  year: {
-    type: String
-  },
-  degree: [{
-    type: String,
-    name: String
-  }],
-  classes: [ // course registration number
-    {
-      courseNumber: Number,
-      className: String,
-      crnNum: Number,
-      section: Number,
-      timeIn: Date,
-      timeOut: Date,
-      professor: String
-    }
-  ],
   lastLogin: {
     type: Date
-  }
+  },
+  ip: [{
+    type: String
+  }],
+  articles: [{
+    type: String
+  }]
 
 })
 

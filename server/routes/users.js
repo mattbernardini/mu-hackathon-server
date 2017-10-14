@@ -45,27 +45,11 @@ const router = new express.Router()
 
 */
 
-// returns user info by token
-router.get('/profile', passport.authenticate('jwt', {session: false}), (req, res, next) => {
-  res.json({user: {
-    id: req.user._id,
-    fName: req.user.fName,
-    lName: req.user.lName,
-    userName: req.user.username,
-    email: req.user.email,
-    degree: req.user.degree
-  }})
-})
-
-router.post('/updateUser', (req, res) => {
-  console.log('/updateUser called')
+router.patch('/', (req, res) => {
+  console.log('PATCH /users/')
   console.log(req.body)
 
-  var updatedUser = {
-    fName: req.body.fName,
-    lName: req.body.lName,
-    school: req.body.school
-  }
+  var updatedUser = {...req.body}
 
   User.updateUser(req.body._id, updatedUser, (err) => {
     if (err) {
@@ -75,16 +59,6 @@ router.post('/updateUser', (req, res) => {
     } else {
       res.json({success: true, msg: 'Updated '})
       console.log('Updated')
-    }
-  })
-})
-
-router.get('/getAllUsers', (req, res) => {
-  User.getAllUsers((err, ret) => {
-    if (err) {
-      console.log('there is an error')
-    } else {
-      res.json({success: true, data: ret})
     }
   })
 })
