@@ -74,12 +74,7 @@ module.exports.comparePassword = function (candidatePassword, hash, callback) {
 // Updates user info
 module.exports.updateUser = function (id, updatedUser, callback) {
   console.log(updatedUser)
-  User.findByIdAndUpdate({_id: mongoose.Types.ObjectId(id)}, updatedUser, callback)
-}
-
-// Gives the caller the enitre list of users
-module.exports.getAllUsers = function (callback) {
-  User.find({}, {password: 0, _id: 0}, callback)
+  User.findByIdAndUpdate({_id: id}, updatedUser, callback)
 }
 
 // Checks to see if a username is already being used

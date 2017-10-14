@@ -51,7 +51,7 @@ router.patch('/', (req, res) => {
 
   var updatedUser = {...req.body}
 
-  User.updateUser(req.body._id, updatedUser, (err) => {
+  User.updateUser(req.body.id, updatedUser, (err) => {
     if (err) {
       console.log(err)
       res.json({success: false, msg: 'Error occured, fialed to update '})
