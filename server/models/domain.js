@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const whois = require('whois')
 
 const domainSchema = mongoose.Schema({
   name: {
