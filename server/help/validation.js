@@ -67,6 +67,14 @@ function validateMongoId (propertyValue, propertyName = '', failureMessage = '')
     const errorMessage = new errors.ErrorMessage('Please enter valid mongoid', propertyName, propertyValue)
     return errorMessage
   }
+  return undefined
+}
+function validateUrl (url) {
+  if (!validator.isURL(url)) {
+    const errorMessage = new errors.ErrorMessage('Please enter valid url', 'url', url)
+    return errorMessage
+  }
+  return undefined
 }
 module.exports = {
   validationWrapper (obj, callback) {
@@ -85,6 +93,12 @@ module.exports = {
       _.forEach(validateMongoIdArray(obj.articles), function (err) {
         errorArray.errors.push(err)
       })
+    }
+    if (obj.url && validateUrl(obj.url)) {
+      errorArray.errors.push(validateUrl(obj.url))
+    }
+    if (obj.editor && validateWordWithSpacePattern(obj.editor)) {
+      errorArray.errors.push(validateWordWithSpacePattern(obj.editor, 'editor', 'Please enter valid name'))
     }
     callback(errorArray)
   }
