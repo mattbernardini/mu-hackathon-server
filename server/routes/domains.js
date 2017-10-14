@@ -1,14 +1,14 @@
 const express = require('express')
 const router = new express.Router()
-const Author = require('../models/author')
+const Domain = require('../models/domain')
 
 router.patch('/', (req, res) => {
-  console.log('PATCH /authors/')
+  console.log('PATCH /domains/')
   console.log(req.body)
 
-  var updatedAuthor = {...req.body}
+  var updatedDomain = {...req.body}
 
-  Author.updateAuthor(req.body._id, updatedAuthor, (err) => {
+  Domain.updateAuthor(req.body._id, updatedDomain, (err) => {
     if (err) {
       console.log(err)
       res.json({success: false, msg: 'Error occured, fialed to update '})
