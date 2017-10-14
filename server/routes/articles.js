@@ -4,7 +4,6 @@ const Article = require('../models/article')
 const MongoQS = require('mongo-querystring')
 const HTMLParser = require('fast-html-parser')
 const curl = require('curl')
-const cheerio = require('cheerio')
 const _ = require('lodash')
 
 router.post('/', (req, res) => {
@@ -16,12 +15,18 @@ router.post('/', (req, res) => {
     }
     console.log(body)
     console.log(body.request.host)
+    const host = body.request.host
     const dom = HTMLParser.parse(body.body)
     const h1 = dom.querySelector('h1')
     console.log(h1)
-    // fox
-    const auth = dom.querySelector('.author-byline span a')
-    // cnn
+    let auth = {}
+    switch (host) {
+      case 'www.foxnews.com':
+        auth = dom.querySelector('.author-byline span a')
+        break
+      case 'money.cnn.com':
+        auth = dom.querySelector('.byline')
+    }
     if (_.isEmpty(auth)) {
 
     }

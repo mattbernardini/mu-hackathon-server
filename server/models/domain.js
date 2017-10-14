@@ -4,8 +4,8 @@ const domainSchema = mongoose.Schema({
   name: {
     type: String
   },
-  date: {
-    type: Date
+  whois: {
+    type: Object
   }
 })
 

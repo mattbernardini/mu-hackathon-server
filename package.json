@@ -37,6 +37,7 @@
     "swagger-ui": "^3.2.1",
     "type-check": "^0.3.2",
     "validator": "^8.0.0",
+    "whois-json": "^1.2.2",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
