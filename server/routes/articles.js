@@ -1,6 +1,34 @@
 const express = require('express')
 const router = new express.Router()
 const Article = require('../models/article')
+const MongoQS = require('mongo-querystring')
+const HTMLParser = require('fast-html-parser')
+const curl = require('curl')
+const cheerio = require('cheerio')
+const _ = require('lodash')
+
+router.post('/', (req, res) => {
+  console.log(req.body)
+  curl.get(req.body.url, (err, body) => {
+    if (!_.isEmpty(err)) {
+      console.log(err)
+      return res.status(500).json({errors: {message: 'Error occured'}})
+    }
+    console.log(body)
+    console.log(body.request.host)
+    const dom = HTMLParser.parse(body.body)
+    const h1 = dom.querySelector('h1')
+    console.log(h1)
+    // fox
+    const auth = dom.querySelector('.author-byline span a')
+    // cnn
+    if (_.isEmpty(auth)) {
+
+    }
+    console.log(auth)
+  })
+  return res.status(200)
+})
 
 router.patch('/', (req, res) => {
   console.log('PATCH /articles/')
@@ -47,6 +75,5 @@ router.get('/', (req, res) => {
     res.json({articles})
   })
 })
-const MongoQS = require('mongo-querystring')
 
 module.exports = router
