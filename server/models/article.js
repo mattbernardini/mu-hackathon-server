@@ -13,11 +13,11 @@ const articleSchema = mongoose.Schema({
   tags: [{
     name: String,
     count: Number,
-    ssr: Number
+    user: String
   }],
-  domains: [{
+  domains: {
     type: String
-  }],
+  },
   author: [{
     type: String
   }]
