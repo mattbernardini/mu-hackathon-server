@@ -1,5 +1,8 @@
 const express = require('express')
 const User = require('../models/user')
+const MongoQS = require('mongo-querystring')
+const prep = require('../help/prepForSend')
+const _ = require('lodash')
 const router = new express.Router()
 
 /*
@@ -49,13 +52,36 @@ router.patch('/', (req, res) => {
   User.updateUser(req.body.id, updatedUser, (err) => {
     if (err) {
       console.log(err)
-      res.json({success: false, msg: 'Error occured, fialed to update '})
-      console.log('Error occured, fialed to update.')
+      return res.status(500).json({errors: {message: 'Error occured, fialed to update '}})
     } else {
-      res.json({success: true, msg: 'Updated '})
-      console.log('Updated')
+      return res.status(200)
     }
   })
 })
 
+router.get('/', (req, res) => {
+  console.log('GET /users')
+  console.log(req.query)
+  const qs = new MongoQS({
+    custom: {
+      urlQueryParamName: function (query, input) {
+        query['username'] = input.username
+        query['email'] = input.email
+        query['articles'] = input.articles
+      }
+    }
+  })
+  const query = qs.parse(req.query)
+  User.find(query, (err, user2) => {
+    if (err) {
+      console.log(err)
+      return res.status(500).json({errors: {message: 'Error occured'}})
+    }
+    let users = []
+    _.forEach(user2, function (u) {
+      users.push(prep.prepForSend(u))
+    })
+    res.json({users})
+  })
+})
 module.exports = router
