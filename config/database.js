@@ -1,5 +1,5 @@
 
 module.exports = {
-  database: 'mongodb://fastcampus:123456789@ds155961.mlab.com:55961/fastcampus',
+  database: 'mongodb://defaultuser:sl!pKNOT@ds121015.mlab.com:21015/mu-hackathon-server',
   secret: 'yoursecret'
 }
