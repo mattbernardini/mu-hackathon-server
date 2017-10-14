@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const config = require('../../config/database')
 const bcrypt = require('bcrypt')
 
 // User Schema
@@ -22,7 +21,8 @@ const UserSchema = mongoose.Schema({
     type: Date
   },
   ip: [{
-    type: String
+    value: String,
+    dateUsed: Date
   }],
   articles: [{
     type: String
@@ -44,6 +44,7 @@ module.exports.getUserByUsername = function (username, callback) {
 
 // returns information for a specific user based on email
 module.exports.getUserByEmail = function (email, callback) {
+  console.log('here22')
   User.findOne({email}, callback)
 }
 
