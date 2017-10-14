@@ -44,7 +44,6 @@ module.exports.getUserByUsername = function (username, callback) {
 
 // returns information for a specific user based on email
 module.exports.getUserByEmail = function (email, callback) {
-  console.log('here22')
   User.findOne({email}, callback)
 }
 

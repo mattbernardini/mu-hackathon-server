@@ -2,7 +2,6 @@ const validator = require('validator')
 const _ = require('lodash')
 const typeCheck = require('type-check').typeCheck
 const errors = require('./errors')
-const User = require('../models/user')
 
 /**
  * Functions return undefined due to TypeScript not allowing null or false.

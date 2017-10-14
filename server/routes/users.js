@@ -1,10 +1,5 @@
 const express = require('express')
-const validator = require('validator')
-const passport = require('passport')
-const jwt = require('jsonwebtoken')
 const User = require('../models/user')
-const config = require('../../config/database')
-const bcrypt = require('bcryptjs')
 const router = new express.Router()
 
 /*

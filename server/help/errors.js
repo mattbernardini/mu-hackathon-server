@@ -9,6 +9,7 @@ class ErrorMessage {
 exports.ErrorMessage = ErrorMessage
 class ErrorArray {
   constructor () {
+    // es-lint-disable-next-line
     this.errors = new Array()
   }
 }

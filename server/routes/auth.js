@@ -5,7 +5,6 @@ const _ = require('lodash')
 const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 const config = require('../../config/database')
-const error = require('../help/errors')
 const router = new express.Router()
 
 /*
@@ -113,8 +112,8 @@ router.post('/login', (req, res) => {
       // Log info
       console.log('No User Found')
       // Set RFC 7235 401 header info
-      return res.status(401).setHeader('WWW-Authenticate', 'Basic realm="CrowdCheck"').
-        json({errors: {message: 'bad username'}})
+      return res.status(401).setHeader('WWW-Authenticate', 'Basic realm="CrowdCheck"')
+        .json({errors: {message: 'bad username'}})
     }
     // If the user does exist check the password
     User.comparePassword(password, user2.password, (err, isMatch) => {
@@ -133,8 +132,8 @@ router.post('/login', (req, res) => {
         return res.status(201).json({token, user})
       } else {
         // Set RFC 7235 401 header info
-        return res.status(401).setHeader('WWW-Authenticate', 'Basic realm="FASTCampus"').
-          json({errors: {message: 'Bad password'}})
+        return res.status(401).setHeader('WWW-Authenticate', 'Basic realm="FASTCampus"')
+          .json({errors: {message: 'Bad password'}})
       }
     })
   })
