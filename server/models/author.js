@@ -24,5 +24,16 @@ const authorSchema = mongoose.Schema({
 
 const Author = module.exports = mongoose.model('Author', authorSchema)
 
+module.exports.addAuthor = function (newAuthor, callback) {
+  newAuthor.save(callback)
+}
 
-module.exports.
+module.exports.updateAuthor = function (_id, updatedAuthor, callback) {
+  console.log(updatedAuthor)
+  Author.findByIdAndUpdate({_id}, updatedAuthor, callback)
+}
+
+module.exports.deleteAuthor = function (_id, callback) {
+  Author.findByIdAndRemove(_id, callback)
+}
+
