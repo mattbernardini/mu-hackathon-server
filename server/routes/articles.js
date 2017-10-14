@@ -1,14 +1,14 @@
 const express = require('express')
 const router = new express.Router()
-const Author = require('../models/author')
+const Article = require('../models/article')
 
 router.patch('/', (req, res) => {
-  console.log('PATCH /authors/')
+  console.log('PATCH /articles/')
   console.log(req.body)
 
-  var updatedAuthor = {...req.body}
+  var updatedArticle = {...req.body}
 
-  Author.updateAuthor(req.body._id, updatedAuthor, (err) => {
+  Article.updateAuthor(req.body._id, updatedArticle, (err) => {
     if (err) {
       console.log(err)
       res.json({success: false, msg: 'Error occured, fialed to update '})
@@ -21,28 +21,30 @@ router.patch('/', (req, res) => {
 })
 
 router.get('/', (req, res) => {
-  console.log('GET /authors')
+  console.log('GET /articles')
   console.log(req.query)
   const qs = new MongoQS({
     custom: {
       urlQueryParamName: function (query, input) {
-        query['name'] = input.name
-        query['domains'] = input.domains
+        query['url'] = input.url
+        query['editor'] = input.editor
+        query['pubDate'] = input.pubDate
         query['tags'] = input.tags
+        query['domains'] = input.author
       }
     }
   })
   const query = qs.parse(req.query)
-  Author.find(query, (err, author2) => {
+  Article.find(query, (err, article2) => {
     if (err) {
       console.log(err)
       return res.status(500).json({errors: {message: 'Error occured'}})
     }
-    let authors = []
-    _.forEach(author2, function (u) {
-      authors.push(prep.prepForSend(u))
+    let articles = []
+    _.forEach(article2, function (u) {
+      articles.push(prep.prepForSend(u))
     })
-    res.json({authors})
+    res.json({articles})
   })
 })
 const MongoQS = require('mongo-querystring')
