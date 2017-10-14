@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const whois = require('whois')
 
 const domainSchema = mongoose.Schema({
   name: {
@@ -12,7 +13,14 @@ const domainSchema = mongoose.Schema({
 const Domain = module.exports = mongoose.model('Domain', domainSchema)
 
 module.exports.addDomain = function (newDomain, callback) {
-  newDomain.save(callback)
+  whois.lookup(newDomain, (err, data) => {
+    if (err) throw err
+    const newD2 = new Domain({
+      name: data.domainName,
+      whois: data
+    })
+    newD2.save()
+  })
 }
 
 module.exports.updateDomain = function (_id, updatedDomain, callback) {
