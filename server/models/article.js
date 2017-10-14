@@ -12,7 +12,6 @@ const articleSchema = mongoose.Schema({
   },
   tags: [{
     name: String,
-    count: Number,
     user: String
   }],
   domains: {
