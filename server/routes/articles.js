@@ -21,6 +21,7 @@ router.post('/', (req, res) => {
     console.log(body)
     console.log(body.request.host)
     const host = body.request.host
+    article.url = body.request.host
     const dom = HTMLParser.parse(body.body)
     article.title = dom.querySelector('h1')
     // Check for Domain existance
@@ -31,12 +32,12 @@ router.post('/', (req, res) => {
       }
       if (_.isEmpty(foundDomain)) {
         // Create new domain
+      } else {
+        console.log('found domain')
+        callback(foundDomain)
       }
-      // Grab id
-      console.log('found domain')
-      callback(foundDomain)
     })
-  //  console.log(fd.schema.tree.name())
+    console.log(fd)
     console.log('here')
     res.sendStatus(200)
   })
