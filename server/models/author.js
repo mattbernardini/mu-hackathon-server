@@ -10,7 +10,7 @@ const authorSchema = mongoose.Schema({
   tags: [{
     name: String,
     count: Number,
-    ssr: Number
+    snr: Number
   }],
   articles: [{
     url: String,
@@ -19,7 +19,7 @@ const authorSchema = mongoose.Schema({
     tags: String,
     domains: String,
     author: String
-  }]  
+  }]
 })
 
 const Author = module.exports = mongoose.model('Author', authorSchema)

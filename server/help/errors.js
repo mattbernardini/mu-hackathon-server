@@ -9,7 +9,7 @@ class ErrorMessage {
 exports.ErrorMessage = ErrorMessage
 class ErrorArray {
   constructor () {
-    this.errors = []
+    this.errors = new Array()
   }
 }
 exports.ErrorArray = ErrorArray

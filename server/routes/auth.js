@@ -1,11 +1,11 @@
+const val = require('../help/validation')
+const prep = require('../help/prepForSend')
 const express = require('express')
-const validator = require('validator')
-const passport = require('passport')
 const _ = require('lodash')
 const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 const config = require('../../config/database')
-const bcrypt = require('bcryptjs')
+const error = require('../help/errors')
 const router = new express.Router()
 
 /*
@@ -64,69 +64,60 @@ router.post('/signup', (req, res) => {
   console.log(req.body)
 
   // Create new user to pass to function
-  var newUser = new User(...req.body)
-
-  // Validate the username before checking against the db
-  User.doesUserNameExist(newUser, (err, user) => {
-    // Error handling
-    if (err) {
-      console.log(err)
-      res.json({err})
-    } else {
-      // No error, check to see if the username is taken
-      if (_.isEmpty(user)) {
-        // Means user namename is taken, error out
-        let erArray = {}
-        erArray.username = 'This username is already taken.  Please choose another.'
-        res.json({success: false,
-          msg: erArray
-        })
-      } else {
-        // Username is not taken so add new user
-        // Have not touched this since before 9/9/17
-        User.addUser(newUser, (err, user) => {
-          // Handle error
-          if (err) {
-            console.log(err)
-            res.json({success: false,
-              err: err})
-          } else {
-            // Add user and set token
-            const token = jwt.sign(newUser, config.secret, {
-              expiresIn: 604800 // 1 week
-            })
-            res.json({token, user})
-          }
-        })
-      }
+  var newUser = new User({...req.body})
+  console.log(newUser)
+  let erArray = {}
+  val.validationWrapper(newUser, (errorArray) => {
+    erArray = errorArray
+    console.log(erArray.errors)
+    if (!_.isEmpty(erArray.errors)) {
+      console.log(erArray.errors)
+      return res.status(400).json({errors: erArray.errors})
     }
+    // Username is not taken so add new user
+    // Have not touched this since before 9/9/17
+    User.addUser(newUser, (err, user2) => {
+      // Handle error
+      if (err) {
+        console.log(err)
+        res.json({err})
+      } else {
+        // Add user and set token
+        const user = prep.prepForSend(user2)
+        const token = jwt.sign(user, config.secret, {
+          expiresIn: 604800 // 1 week
+        })
+
+        return res.status(201).json({token, user})
+      }
+    })
   })
 })
 
 // /login Api call taken in a json and if user exists it returns a token
 router.post('/login', (req, res) => {
+  console.log(req.body)
   // Log username and password in the console
-  const username = req.body.userName
+  const username = req.body.username
   const password = req.body.password
   // console.log('username: ', username, 'password: ', password)
 
   // Check to see if the username exists
-  User.getUserByUsername(username, (err, user) => {
+  User.getUserByUsername(username, (err, user2) => {
     // Log where we are in the api
     console.log('/auth/login API call called')
     // Handle err
     if (err) throw err
     // If the user doesnt exist
-    if (!user) {
+    if (!user2) {
       // Log info
       console.log('No User Found')
       // Set RFC 7235 401 header info
-      res.status(401).setHeader('WWW-Authenticate', 'Basic realm="FASTCampus"')
-      // Set app specific info and return
-      return res.json({success: false, msg: 'User not found.'})
+      return res.status(401).setHeader('WWW-Authenticate', 'Basic realm="CrowdCheck"').
+        json({errors: {message: 'bad username'}})
     }
     // If the user does exist check the password
-    User.comparePassword(password, user.password, (err, isMatch) => {
+    User.comparePassword(password, user2.password, (err, isMatch) => {
       // Lod where we are
       console.log('compare pass')
       // Handle error
@@ -134,56 +125,18 @@ router.post('/login', (req, res) => {
       // If it is a match
       if (isMatch) {
         // Create jwt token
+        const user = prep.prepForSend(user2)
         const token = jwt.sign(user, config.secret, {
           expiresIn: 604800 // 1 week
         })
-        // create return json and send back to client
-        res.status(200).json({
-          token: 'JWT ' + token,
-          user: {
-            id: user._id,
-            fName: user.fName,
-            lName: user.lName,
-            username: user.username,
-            email: user.email,
 
-          }
-        })
+        return res.status(201).json({token, user})
       } else {
         // Set RFC 7235 401 header info
-        res.status(401).setHeader('WWW-Authenticate', 'Basic realm="FASTCampus"')
-        // Set app specific messages and return to client
-        return res.json({success: false, msg: 'Wrong password'})
+        return res.status(401).setHeader('WWW-Authenticate', 'Basic realm="FASTCampus"').
+          json({errors: {message: 'Bad password'}})
       }
     })
-  })
-})
-
-router.post('/logout', (req, res) => {
-  // Log for trouble shooting
-  console.log('/auth/logout API called')
-  // create updatedUser object to pass to User.updateUser
-  const updatedUser = {}
-  // Set lastLogin date/time to now, MongoDB will handle the conversion from
-  // miliseconds after epoch to current time
-  updatedUser.lastLogin = Date.now()
-
-  // Pass info to updateUser
-  User.updateUser(req.body.id, updatedUser, (err) => {
-    // Handle error
-    if (err) {
-      // Log error for trouble shooting
-      console.log(err)
-      res.json({success: false,
-        err: err,
-        msg: 'Soemthing went wrong on our end.  Plesae try again.'})
-    } else {
-      // Send client success response
-      res.json({
-        success: true,
-        msg: 'Lastlogin updated'
-      })
-    }
   })
 })
 
