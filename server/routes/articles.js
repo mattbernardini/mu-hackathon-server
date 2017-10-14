@@ -5,6 +5,9 @@ const MongoQS = require('mongo-querystring')
 const HTMLParser = require('fast-html-parser')
 const curl = require('curl')
 const _ = require('lodash')
+const prep = require('../help/prepForSend')
+const Author = require('../models/author')
+const Domain = require('../models/Domain')
 
 router.post('/', (req, res) => {
   console.log(req.body)
@@ -13,25 +16,31 @@ router.post('/', (req, res) => {
       console.log(err)
       return res.status(500).json({errors: {message: 'Error occured'}})
     }
+    // Parse the HTML for info
+    let article = new Article()
     console.log(body)
     console.log(body.request.host)
     const host = body.request.host
     const dom = HTMLParser.parse(body.body)
-    const h1 = dom.querySelector('h1')
-    console.log(h1)
-    let auth = {}
-    switch (host) {
-      case 'www.foxnews.com':
-        auth = dom.querySelector('.author-byline span a')
-        break
-      case 'money.cnn.com':
-        auth = dom.querySelector('.byline')
-    }
-    if (_.isEmpty(auth)) {
-
-    }
-    console.log(auth)
+    article.title = dom.querySelector('h1')
+    // Check for Domain existance
+    const fd = Domain.findOne({name: host}, (err, callback) => {
+      if (!_.isEmpty(err)) {
+        console.log(err)
+        return res.status(500).json({errors: {message: 'Error occured'}})
+      }
+      if (_.isEmpty(foundDomain)) {
+        // Create new domain
+      }
+      // Grab id
+      console.log('found domain')
+      callback(foundDomain)
+    })
+  //  console.log(fd.schema.tree.name())
+    console.log('here')
+    res.sendStatus(200)
   })
+
   return res.status(200)
 })
 

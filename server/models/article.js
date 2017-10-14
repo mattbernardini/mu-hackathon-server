@@ -2,9 +2,13 @@ const mongoose = require('mongoose')
 
 const articleSchema = mongoose.Schema({
   url: {
-    type: String
+    type: String,
+    unique: true
   },
   editor: {
+    type: String
+  },
+  title: {
     type: String
   },
   pubDate: {
