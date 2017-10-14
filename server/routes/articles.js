@@ -48,7 +48,7 @@ router.patch('/', (req, res) => {
   console.log('PATCH /articles/')
   console.log(req.body)
 
-  var updatedArticle = {...req.body}
+  var updatedArticle = (req.body)
 
   Article.updateAuthor(req.body._id, updatedArticle, (err) => {
     if (err) {
