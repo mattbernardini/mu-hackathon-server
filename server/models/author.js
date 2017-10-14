@@ -10,7 +10,7 @@ const authorSchema = mongoose.Schema({
   tags: [{
     name: String,
     count: Number,
-    ssr: Number
+    snr: Number
   }],
   articles: [{
     url: String,
@@ -36,3 +36,4 @@ module.exports.updateAuthor = function (_id, updatedAuthor, callback) {
 module.exports.deleteAuthor = function (_id, callback) {
   Author.findByIdAndRemove(_id, callback)
 }
+
