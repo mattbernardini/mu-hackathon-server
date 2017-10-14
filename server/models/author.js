@@ -36,4 +36,3 @@ module.exports.updateAuthor = function (_id, updatedAuthor, callback) {
 module.exports.deleteAuthor = function (_id, callback) {
   Author.findByIdAndRemove(_id, callback)
 }
-
