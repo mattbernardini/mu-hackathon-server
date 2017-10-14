@@ -13,12 +13,7 @@ const authorSchema = mongoose.Schema({
     snr: Number
   }],
   articles: [{
-    url: String,
-    editor: String,
-    pubDate: Date,
-    tags: String,
-    domains: String,
-    author: String
+    type: String
   }]
 })
 

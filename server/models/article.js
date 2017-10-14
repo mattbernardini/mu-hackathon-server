@@ -19,10 +19,7 @@ const articleSchema = mongoose.Schema({
     type: String
   }],
   author: [{
-    name: String,
-    domain: String,
-    tags: String,
-    articles: String
+    type: String
   }]
 })
 
