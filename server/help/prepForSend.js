@@ -15,6 +15,9 @@ module.exports = {
     if (obj._doc.passwordResetToken) {
       delete obj.passwordResetToken
     }
+    if (obj.__v) {
+      delete obj.__v
+    }
     const newObj = Object.assign({ id: obj._id }, obj._doc)
     delete newObj._id
     return newObj
