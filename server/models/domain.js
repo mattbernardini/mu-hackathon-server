@@ -9,10 +9,10 @@ const domainSchema = mongoose.Schema({
   whois: {
     type: Object
   },
-  article: [{
+  articles: [{
     type: String
   }],
-  author: [{
+  authors: [{
     type: String
   }]
 })

@@ -5,6 +5,10 @@ module.exports = {
       delete obj.password
       obj.password = undefined
     }
+    if (obj.whois) {
+      delete obj.whois
+      obj.whois = undefined
+    }
     if (obj.ip) {
       delete obj.inspect
       obj.ip = undefined

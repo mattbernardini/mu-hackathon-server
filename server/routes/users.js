@@ -3,70 +3,9 @@ const User = require('../models/user')
 const MongoQS = require('mongo-querystring')
 const prep = require('../help/prepForSend')
 const _ = require('lodash')
-const val = require('../help/validation')
 const errors = require('../help/errors')
 const router = new express.Router()
 
-/*
-  This file contains api calls for user profile, updateUser, getAllUsers, classes
-    /user/profile | GET | Retrives user Information
-      Authrization
-      Information Expected :
-        JWT token
-      Returns:
-        Fail:
-          General err ->
-            Boolean | Success | false
-            String | err | err message
-          authentication failure ->
-            Boolean | Success | false
-            String | msg | err message
-        Success:
-          JSON object named user
-          user{
-            fName,
-            lName,
-            userName,
-            email
-          }
-     ----------------------------------------------------
-     /user/updateUser | POST | Allows client to update user
-        Content-Type : application/json
-        Infomation Expected:
-          id, content to be updated
-        Returns:
-          Fail:
-            General err ->
-              Boolean | Success | false
-              String | err | err message
-          Success:
-            Boolean | Success | true
-            String | msg | User readable message
-
-*/
-
-router.patch('/', (req, res) => {
-  console.log('PATCH /users/')
-  console.log(req.body)
-  let erArray = {}
-  const updatedUser = (req.body)
-  val.validationWrapper(updatedUser, (errorArray) => {
-    erArray = errorArray
-    console.log(erArray.errors)
-    if (!_.isEmpty(erArray.errors)) {
-      console.log(erArray.errors)
-      return res.status(400).json({errors: erArray.errors})
-    }
-    User.updateUser(req.body.id, updatedUser, (err) => {
-      if (err) {
-        console.log(err)
-        return res.status(500).json({errors: {message: 'Error occured, fialed to update '}})
-      } else {
-        return res.status(200)
-      }
-    })
-  })
-})
 /**
  * @api {get} /users Requests for accessing user data
  * @apiSampleRequest https://mu-hackathon.herokuapp.com/users/:query
@@ -170,7 +109,7 @@ router.get('/', (req, res) => {
     _.forEach(user2, function (u) {
       users.push(prep.prepForSend(u))
     })
-    res.json({users})
+    return res.status(200).json({users})
   })
 })
 module.exports = router
