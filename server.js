@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const passport = require('passport')
 const mongoose = require('mongoose')
 const config = require('./config/database')
+const path = require('path')
 // const PDFParser = require('pdf2json')
 // const fs = require('fs')
 // let pdfParser = new PDFParser()
@@ -41,8 +42,7 @@ app.use(passport.session())
 const port = process.env.PORT || 3000
 
 // tellint the app to look for static files in these directories
-app.use(express.static('.client/public/index.html'))
-app.use(express.static('./client/dist'))
+app.use(express.static('./public'))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json()) // <--- Here
 
@@ -62,9 +62,3 @@ app.use('/articles', articleRoute)
 app.listen(port, () => {
   console.log('Server started on port ' + port)
 })
-
-// pdfParser.on('pdfParser_dataError', errData => console.error('PDF Error' + errData.parserError))
-// pdfParser.on('pdfParser_dataReady', pdfData => {
-//   fs.writeFile('./pdf2json/umslcls.json', JSON.stringify(pdfData.getAllFieldsTypes()))
-// })
-// pdfParser.loadPDF('./FS17 PDF of Classes.pdf')

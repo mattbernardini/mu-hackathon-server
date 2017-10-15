@@ -107,18 +107,47 @@ router.post('/', (req, res) => {
 router.patch('/', (req, res) => {
   console.log('PATCH /articles/')
   console.log(req.body)
-
-  var newTags = (req.body)
-
-  Article.updateArticle(req.body._id, newTags, (err) => {
-    if (err) {
+  var user
+  var author
+  var article
+  User.findOne({_id: req.body.id}, (err, foundUser) => {
+    if (!_.isEmpty(err)) {
       console.log(err)
-      res.json({success: false, msg: 'Error occured, failed to update '})
-      console.log('Error occured, fialed to update.')
-    } else {
-      res.json({success: true, msg: 'Updated '})
-      console.log('Updated')
+      return res.status(500).json({errors: {message: 'Error occured'}})
     }
+    user = foundUser
+    Article.findOne({url: req.body.url}, (err, fArticle) => {
+      if (!_.isEmpty(err)) {
+        console.log(err)
+        return res.status(500).json({errors: {message: 'Error occured'}})
+      }
+      article = fArticle
+      Author.findOne({_id: article.author[0]}, (err, foundAuthor) => {
+        if (!_.isEmpty(err)) {
+          console.log(err)
+          return res.status(500).json({errors: {message: 'Error occured'}})
+        }
+        author = foundAuthor
+        _.forEach(req.body.tags, (tag) => {
+          let tagCheck = false
+          _.forEach(author.tags, (iTag) => {
+            if (tag === iTag) {
+              iTag.count++
+              tagCheck = true
+            }
+          })
+          if (!tagCheck) {
+            // If we didnt find the tag
+            author.tags.push({name: tag, count: 1, snr: 0})
+          }
+        })
+        user.articles.push(article._id)
+        console.log(user)
+        console.log(article)
+        console.log(author)
+        res.sendStatus(200)
+      })
+    })
   })
 })
 
