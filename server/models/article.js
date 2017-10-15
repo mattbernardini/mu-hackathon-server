@@ -32,9 +32,9 @@ module.exports.addArticle = function (newArticle, callback) {
   newArticle.save(callback)
 }
 
-module.exports.updateArticle = function (_id, updatedArticle, callback) {
-  console.log(updatedArticle)
-  Article.findByIdAndUpdate({_id}, updatedArticle, callback)
+module.exports.updateArticle = function (_id, newTags, callback) {
+  console.log(newTags)
+  Article.findByIdAndUpdate({_id}, newTags, callback)
 }
 
 module.exports.deleteArticle = function (_id, callback) {

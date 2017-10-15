@@ -108,12 +108,12 @@ router.patch('/', (req, res) => {
   console.log('PATCH /articles/')
   console.log(req.body)
 
-  var updatedArticle = (req.body)
+  var newTags = (req.body)
 
-  Article.updateAuthor(req.body._id, updatedArticle, (err) => {
+  Article.updateArticle(req.body._id, newTags, (err) => {
     if (err) {
       console.log(err)
-      res.json({success: false, msg: 'Error occured, fialed to update '})
+      res.json({success: false, msg: 'Error occured, failed to update '})
       console.log('Error occured, fialed to update.')
     } else {
       res.json({success: true, msg: 'Updated '})
