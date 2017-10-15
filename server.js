@@ -52,12 +52,16 @@ require('./config/passport')(passport)
 const authRoutes = require('./server/routes/auth') // /login /signup /profile
 const userRoute = require('./server/routes/users')
 const articleRoute = require('./server/routes/articles')
+const authorRoute = require('./server/routes/authors')
+const domainRoute = require('./server/routes/domains')
 
 // to push
 // list of backend routes in our app
 app.use('/auth', authRoutes)
 app.use('/users', userRoute)
 app.use('/articles', articleRoute)
+app.use('/authors', authorRoute)
+app.use('/domains', domainRoute)
 
 app.listen(port, () => {
   console.log('Server started on port ' + port)
