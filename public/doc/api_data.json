@@ -131,6 +131,105 @@
     "groupTitle": "Article"
   },
   {
+    "type": "patch",
+    "url": "/articles",
+    "title": "Requests for accessing articles data",
+    "sampleRequest": [
+      {
+        "url": "https://mu-hackathon.herokuapp.com/articles"
+      }
+    ],
+    "name": "PatchArticles",
+    "group": "Article",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "url",
+            "description": "<p>URL of the article to add</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Id of the user that is adding the article</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Array",
+            "optional": false,
+            "field": "tags",
+            "description": "<p>An array of strings consisting of the tags the user wants to add to the article</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 SUCCESS",
+          "type": "json"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "MissingInformationError",
+            "description": "<p>The information required to login was not present</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ValidationError",
+            "description": "<p>The information submitted did not pass validation or was not found in the db</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "InternalServerError",
+            "description": "<p>The server encountered an error while processing the request</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 400 BAD REQUEST\n{\n  \"errors\": [\n    {\n      \"message\": \"Missing required values\",\n    }\n  ]\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 401 UNAUTHORIZED\n{\n  \"errors\": [\n    {\n      \"message\": \"unauthorized\",\n    }\n  ]\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 500 INTERNAL SERVER ERROR\n{\n  \"errors\": [\n    {\n      \"parameter\": \" mu-hackathon-server.users.$username_1 dup key\",\n      \"message\": \"E11000 duplicate key error index\",\n      \"value\": \" \\\"DeathwingX\\\" }\"\n    }\n  ]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "Example usage:",
+        "content": "{\n  \"url\": \"http://www.foxnews.com/politics/2017/10/13/hillary-clinton-calls-trump-sexual-assaulter-in-bbc-interview-but-says-bills-behavior-in-past.html\",\n  \"id\": \"59e211106617b361f022b1b6\",\n  \"tags\": [\"goodSources\", \"prettyPicture\", \"highQuality\"]\n }",
+        "type": "json"
+      }
+    ],
+    "version": "0.0.0",
+    "filename": "server/routes/articles.js",
+    "groupTitle": "Article"
+  },
+  {
     "type": "post",
     "url": "/articles",
     "title": "Requests for accessing articles data",
@@ -275,158 +374,6 @@
       {
         "title": "Example usage:",
         "content": "{\n  \"url\": \"http://www.foxnews.com/politics/2017/10/13/hillary-clinton-calls-trump-sexual-assaulter-in-bbc-interview-but-says-bills-behavior-in-past.html\",\n  \"author\": \"Matt Bernardini\",\n  \"id\": \"59e211106617b361f022b1b6\",\n  \"tags\": [\"goodSources\", \"prettyPicture\", \"highQuality\"]\n }",
-        "type": "json"
-      }
-    ],
-    "version": "0.0.0",
-    "filename": "server/routes/articles.js",
-    "groupTitle": "Article"
-  },
-  {
-    "type": "post",
-    "url": "/articles",
-    "title": "Requests for accessing articles data",
-    "sampleRequest": [
-      {
-        "url": "https://mu-hackathon.herokuapp.com/articles"
-      }
-    ],
-    "name": "PostArticles",
-    "group": "Article",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "url",
-            "description": "<p>URL of the article to add</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "author",
-            "description": "<p>Name of the author to attribute the article</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "String",
-            "optional": false,
-            "field": "id",
-            "description": "<p>Id of the user that is adding the article</p>"
-          },
-          {
-            "group": "Parameter",
-            "type": "Array",
-            "optional": false,
-            "field": "tags",
-            "description": "<p>An array of strings consisting of the tags the user wants to add to the article</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "url",
-            "description": "<p>Url of the article</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "id",
-            "description": "<p>Mongo ID of the object</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "title",
-            "description": "<p>Title of the article</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Array",
-            "optional": false,
-            "field": "tags",
-            "description": "<p>An array of tags, associated with the user who made them</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "domain",
-            "description": "<p>Mongo DB pointer to the domain that it is attributed to</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Array",
-            "optional": false,
-            "field": "author",
-            "description": "<p>Authors that have been attributed to the article</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "HTTP/1.1 200 SUCCESS",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "optional": false,
-            "field": "MissingInformationError",
-            "description": "<p>The information required to login was not present</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "optional": false,
-            "field": "ValidationError",
-            "description": "<p>The information submitted did not pass validation or was not found in the db</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "optional": false,
-            "field": "InternalServerError",
-            "description": "<p>The server encountered an error while processing the request</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 400 BAD REQUEST\n{\n  \"errors\": [\n    {\n      \"message\": \"Missing required values\",\n    }\n  ]\n}",
-          "type": "json"
-        },
-        {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 401 UNAUTHORIZED\n{\n  \"errors\": [\n    {\n      \"message\": \"unauthorized\",\n    }\n  ]\n}",
-          "type": "json"
-        },
-        {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 500 INTERNAL SERVER ERROR\n{\n  \"errors\": [\n    {\n      \"parameter\": \" mu-hackathon-server.users.$username_1 dup key\",\n      \"message\": \"E11000 duplicate key error index\",\n      \"value\": \" \\\"DeathwingX\\\" }\"\n    }\n  ]\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "examples": [
-      {
-        "title": "Example usage:",
-        "content": "{\n  \"url\": \"http://www.foxnews.com/politics/2017/10/13/hillary-clinton-calls-trump-sexual-assaulter-in-bbc-interview-but-says-bills-behavior-in-past.html\",\n  \"id\": \"59e211106617b361f022b1b6\",\n  \"tags\": [\"goodSources\", \"prettyPicture\", \"highQuality\"]\n }",
         "type": "json"
       }
     ],
