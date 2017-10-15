@@ -38,6 +38,7 @@
     "trim": "0.0.1",
     "type-check": "^0.3.2",
     "validator": "^8.0.0",
+    "whois": "^2.5.0",
     "whois-json": "^1.2.2",
     "yamljs": "^0.3.0"
   },

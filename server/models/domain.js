@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const whois = require('whois')
+const _ = require('lodash')
 
 const domainSchema = mongoose.Schema({
   name: {
@@ -7,16 +8,28 @@ const domainSchema = mongoose.Schema({
   },
   whois: {
     type: Object
-  }
+  },
+  article: [{
+    type: String
+  }],
+  author: [{
+    type: String
+  }]
 })
 
 const Domain = module.exports = mongoose.model('Domain', domainSchema)
 
 module.exports.addDomain = function (newDomain, callback) {
-  whois.lookup(newDomain, (err, data) => {
-    if (err) throw err
+  console.log('inside add domain')
+  console.log(newDomain)
+  whois.lookup('cnn.com', {server: 'az whois.ripe.net'}, (err, data) => {
+    console.log(JSON.stringify(data, null, 2))
+    console.log('inside whois')
+    if (!_.isEmpty(err)) {
+      console.log('here')
+    }
     const newD2 = new Domain({
-      name: data.domainName,
+      name: newDomain,
       whois: data
     })
     newD2.save()

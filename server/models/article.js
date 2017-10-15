@@ -18,7 +18,7 @@ const articleSchema = mongoose.Schema({
     name: String,
     user: String
   }],
-  domains: {
+  domain: {
     type: String
   },
   author: [{
