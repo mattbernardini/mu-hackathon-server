@@ -83,7 +83,9 @@ router.post('/signup', (req, res) => {
   // Log to find where we are
   console.log('POST /auth/signup')
   console.log(req.body)
-
+  if (!req.body.username && !req.body.email && !req.body.password) {
+    return res.status(400).json({errors: [{message: 'missing required values'}]})
+  }
   // Create new user to pass to function
   const newUser = new User(req.body)
   console.log(newUser)
