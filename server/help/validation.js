@@ -76,6 +76,7 @@ function validateUrl (url) {
   }
   return undefined
 }
+
 module.exports = {
   validationWrapper (obj, callback) {
     const errorArray = new errors.ErrorArray()
@@ -99,6 +100,9 @@ module.exports = {
     }
     if (obj.editor && validateWordWithSpacePattern(obj.editor)) {
       errorArray.errors.push(validateWordWithSpacePattern(obj.editor, 'editor', 'Please enter valid name'))
+    }
+    if (obj.author && validateWordWithSpacePattern(obj.author)) {
+      errorArray.errors.push(validateWordWithSpacePattern(obj.author, 'author', 'Please enter valid name'))
     }
     callback(errorArray)
   }
