@@ -6,9 +6,10 @@
   "author": "Andres Rodriguez <andrese.rodriguezh@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node server.js"
+    "start": "apidoc -i server/ -o public/doc/ && node server.js"
   },
   "dependencies": {
+    "apidoc": "^0.17.6",
     "babel-core": "^6.25.0",
     "bcrypt": "^1.0.2",
     "bcryptjs": "^2.4.3",
@@ -37,6 +38,7 @@
     "swagger-ui": "^3.2.1",
     "trim": "0.0.1",
     "type-check": "^0.3.2",
+    "user": "0.0.0",
     "validator": "^8.0.0",
     "whois": "^2.5.0",
     "whois-json": "^1.2.2",
